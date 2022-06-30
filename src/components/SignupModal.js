@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import axios from "axios";
 
+
 const SignupModal = ({ open, openSigninModal, close }) => {
   const email_ref = useRef(null);
   const nickname_ref = useRef(null);

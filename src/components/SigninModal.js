@@ -17,11 +17,12 @@ const SigninModal = ({ open, close }) => {
       .then((response) => {
         console.log(response);
         localStorage.setItem("user-email", email_ref.current.value);
-        localStorage.setItem("access-token", response.headers.authorization);
-        alert(response.data.message);
+        localStorage.setItem("access-token", response.data.token);
+        alert(response.data.msg);
         window.location.reload();
       })
       .catch((error) => {
+        console.log(error)
         alert(error.response.data.errorMessage);
         email_ref.current.value = "";
         password_ref.current.value = "";

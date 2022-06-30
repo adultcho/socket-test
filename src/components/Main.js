@@ -21,6 +21,7 @@ const Main = () => {
 
   const logOut = () => {
     localStorage.removeItem("access-token");
+    window.location.reload();
   };
 
   const roomChange = (event) => {
@@ -53,15 +54,12 @@ const Main = () => {
     setRoom("");
     setNick("");
     setChatModalOpen(false);
-    document.body.style.overflow = "unset";
   };
   const closeSigninModal = () => {
     setSigninModalOpen(false);
-    document.body.style.overflow = "unset";
   };
   const closeSignupModal = () => {
     setSignupModalOpen(false);
-    document.body.style.overflow = "unset";
   };
 
   return (
@@ -73,7 +71,9 @@ const Main = () => {
           <button onClick={openSignupModal}>회원가입</button>
         </div>
       ) : (
-        <button onClick={logOut}>로그아웃</button>
+        <div className="auth">
+          <button onClick={logOut}>로그아웃</button>
+        </div>
       )}
 
       <form onSubmit={openChatModal} className="App">
@@ -91,9 +91,7 @@ const Main = () => {
           placeholder="Nickname"
         />
         <div className="room_btn">
-          <button className="chat_button">
-            채팅방 입장
-          </button>
+          <button className="chat_button">채팅방 입장</button>
           <button
             onClick={() => {
               navigate("/video");

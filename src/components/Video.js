@@ -42,6 +42,7 @@ const Video = () => {
 
   //Media 실행(user video, audio)
   useEffect(() => {
+    let myStream;
     //user device(camera) 정보 불러오기
     const getCameras = async () => {
       try {
@@ -61,33 +62,33 @@ const Video = () => {
     };
 
     const getMedia = async () => {
-      console.log(`오디오 선택: ${audioId}`);
-      console.log(cameraId);
+      // console.log(`오디오 선택: ${audioId}`);
       const initialConstrains = {
         audio: true,
         video: { facingMode: "user" }, //selfie mode
       };
 
       const deviceConstraints = {
-        audio: { audioId: { exact: audioId } },
-        video: { cameraId: { exact: cameraId } },
+        audio: { deviceId: { exact: audioId } },
+        video: { deviceId: { exact: cameraId } },
       };
 
       try {
-        const myStream = await navigator.mediaDevices.getUserMedia(
-          audioId ? deviceConstraints : initialConstrains
+        myStream = await navigator.mediaDevices.getUserMedia(
+          audioId || cameraId ? deviceConstraints : initialConstrains
         );
-        
+
         video_ref.current.srcObject = myStream;
-        
         console.log(myStream.getAudioTracks());
 
-          await getCameras();
-
+        await getCameras();
       } catch (e) {
         console.log(e);
       }
     };
+    setMute(false);
+    setVideoCtrl(false);
+
     getMedia();
   }, [audioId, cameraId]);
 
@@ -98,7 +99,6 @@ const Video = () => {
   const audioSelect = (e) => {
     setAudioId(e.target.value);
   };
-
   return (
     <React.Fragment>
       <h1>🐹 화상 채팅방이오</h1>
@@ -130,10 +130,10 @@ const Video = () => {
           })}
         </select>
         {/* audio select */}
-        <select id="audios" onChange={audioSelect}>
-          {audioDevice.map((audio, index) => {
+        <select onChange={audioSelect} id="audios">
+          {audioDevice.map((audio) => {
             return (
-              <option key={index} value={audio.deviceId}>
+              <option key={audio.deviceId} value={audio.deviceId}>
                 {audio.label}
               </option>
             );
